@@ -1,0 +1,22 @@
+generujRownanie([Singleton],Singleton).
+generujRownanie(Lista, Rownanie) :-
+	append(Czesc1Listy, Czesc2Listy, Lista),
+	Czesc1Listy \= [],
+	Czesc2Listy \= [],
+	generujRownanie(Czesc1Listy, RownanieCzesci1),
+	generujRownanie(Czesc2Listy, RownanieCzesci2),
+	wybierzOperacje(RownanieCzesci2, Operacje),
+	member(SymbolOperacji, Operacje),
+	Rownanie =.. [SymbolOperacji, RownanieCzesci1, RownanieCzesci2].
+
+wybierzOperacje(Rownanie, Operacje) :-
+	(   abs(Rownanie) < 0.000000001 , Operacje = [+, -, *]) ;
+	(   abs(Rownanie) > 0.000000001 , Operacje = [+, -, *, /]).
+
+wyrazenie([], , ) :- false.
+wyrazenie(Lista, Wartosc, Wyrazenie) :-
+        generujRownanie(Lista, Wyrazenie),
+	Wartosc is Wyrazenie.
+
+
+$ X =\= 0
